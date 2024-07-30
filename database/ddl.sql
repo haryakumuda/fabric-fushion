@@ -1,6 +1,6 @@
 CREATE DATABASE fabric_fushion;
 
-USE DATABASE fabric_fushion;
+USE fabric_fushion;
 
 -- Table Users
 CREATE TABLE
