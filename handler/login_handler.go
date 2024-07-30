@@ -92,7 +92,6 @@ func SignUp(db *sql.DB) {
 		Role:     "customer",
 	}
 
-	fmt.Println("SIGNUP")
 	id, err := database.AddUser(db, user)
 
 	if err != nil {
@@ -108,6 +107,71 @@ func SignUp(db *sql.DB) {
 	}
 
 	_, err = database.AddCustomer(db, customer)
+
+	if err != nil {
+		fmt.Println("Error Creating User: ", err)
+	}
+
+}
+
+func AddEmployee(db *sql.DB) {
+	fmt.Printf("Enter Admin Name: ")
+	var name string
+	fmt.Scanln(&name)
+
+	fmt.Printf("Enter Admin Email: ")
+	var email string
+	fmt.Scanln(&email)
+
+	fmt.Printf("Enter Admin Password: ")
+	var password string
+	fmt.Scanln(&password)
+
+	fmt.Printf("Enter Admin Position: ")
+	var position string
+	fmt.Scanln(&position)
+
+	fmt.Println("\nAre you sure want to create user? (y/n)")
+	fmt.Println("Name: ", name)
+	fmt.Println("Email: ", email)
+	fmt.Println("Password: ", password)
+	fmt.Println("Position: ", position)
+	for {
+		var answer string
+		fmt.Scanln(&answer)
+
+		if answer == "y" {
+			break
+		} else if answer == "n" {
+			return
+		} else {
+			fmt.Println("Please input valid answer! (y/n)")
+		}
+
+	}
+
+	user := model.User{
+		Id:       0,
+		Email:    email,
+		Password: password,
+		Role:     "admin",
+	}
+
+	id, err := database.AddUser(db, user)
+
+	if err != nil {
+		fmt.Println("Error Creating User: ", err)
+	}
+
+	employee := model.Employee{
+		Id:       0,
+		UserId:   id,
+		Email:    email,
+		Name:     name,
+		Position: position,
+	}
+
+	_, err = database.AddEmployee(db, employee)
 
 	if err != nil {
 		fmt.Println("Error Creating User: ", err)

@@ -15,12 +15,12 @@ func RunCLI(db *sql.DB) {
 	user := Login(db)
 
 	if user == "admin" {
-		AdminMenu()
 		fmt.Println("ADMIN MENU!!!")
+		AdminMenu(db)
 
 	} else if user == "customer" {
-		CustomerMenu()
 		fmt.Println("CUSTOMER MENU!!!")
+		CustomerMenu(db)
 	} else {
 
 		fmt.Println("Goodbye!")
@@ -59,14 +59,14 @@ func Login(db *sql.DB) string {
 	}
 }
 
-func AdminMenu() {
+func AdminMenu(db *sql.DB) {
 	for {
 		fmt.Println("\nSelect Menu:")
 		fmt.Println("1. Add Product")
 		fmt.Println("2. Add Employee")
 		fmt.Println("3. Order Reports")
 		fmt.Println("4. Stock Reprots")
-		fmt.Println("5. Exit")
+		fmt.Println("0. Exit")
 		fmt.Printf("\nEnter the number of the menu you want to access: ")
 
 		var choice int
@@ -75,12 +75,12 @@ func AdminMenu() {
 		case 1:
 			// handler.AddProduct()
 		case 2:
-			// handler.AddEmployee()
+			handler.AddEmployee(db)
 		case 3:
 			// handler.OrderReports()
 		case 4:
 			// handler.StockReports()
-		case 5:
+		case 0:
 			fmt.Println("Exit")
 			return
 		}
@@ -88,12 +88,12 @@ func AdminMenu() {
 
 }
 
-func CustomerMenu() {
+func CustomerMenu(db *sql.DB) {
 
 	for {
 		fmt.Println("\nSelect Menu:")
 		fmt.Println("1. BuyProduct")
-		fmt.Println("5. Exit")
+		fmt.Println("0. Exit")
 		fmt.Printf("\nEnter the number of the menu you want to access: ")
 
 		var choice int
@@ -101,7 +101,7 @@ func CustomerMenu() {
 		switch choice {
 		case 1:
 			// handler.BuyProduct()
-		case 5:
+		case 0:
 			fmt.Println("Exit")
 			return
 		}

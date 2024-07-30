@@ -19,3 +19,11 @@ type UserLogin struct {
 	Email    string
 	Password string
 }
+
+type Employee struct {
+	Id       int64
+	UserId   int64
+	Email    string
+	Name     string
+	Position string
+}

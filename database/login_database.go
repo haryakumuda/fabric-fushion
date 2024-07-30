@@ -59,9 +59,9 @@ func GetUser(db *sql.DB, user model.UserLogin) (bool, string) {
 	return true, role
 }
 
-func AddEmployee(db *sql.DB, customer model.Customer) (int64, error) {
-	query := `INSERT INTO customers (user_id, email, name, phone_number) VALUES (?, ?, ?, ?)`
-	result, err := db.Exec(query, customer.UserId, customer.Email, customer.Name, customer.PhoneNumber)
+func AddEmployee(db *sql.DB, employee model.Employee) (int64, error) {
+	query := `INSERT INTO employees (user_id, email, name, position) VALUES (?, ?, ?, ?)`
+	result, err := db.Exec(query, employee.UserId, employee.Email, employee.Name, employee.Position)
 	if err != nil {
 		return 0, err
 	}
