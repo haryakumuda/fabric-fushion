@@ -50,3 +50,28 @@ CREATE TABLE
     customer_id INT UNSIGNED,
     FOREIGN KEY (customer_id) REFERENCES customers (id)
   );
+
+-- INSERT FIRST QUERY
+-- Inserting the first user
+INSERT INTO
+  users (email, password, role)
+VALUES
+  ('john@yahoo.com', 'password', 'admin');
+
+-- Inserting the second user
+INSERT INTO
+  users (email, password, role)
+VALUES
+  ('jane@yahoo.com', 'password', 'customer');
+
+-- Inserting employee
+INSERT INTO
+  employees (user_id, email, name, position)
+values
+  (1, "john@yahoo.com", "John Doe", "Manager");
+
+-- Inserting Customer
+INSERT INTO
+  customers (user_id, email, name, phone_number)
+VALUES
+  (2, 'jane@yahoo.com', 'Jane Doe', '081212345678');
