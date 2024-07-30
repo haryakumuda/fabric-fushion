@@ -7,14 +7,14 @@ import (
 
 func RunCLI(db *sql.DB) {
 
-	user := Login(db)
+	// user := Login(db)
 
-	if user == "admin" {
-		AdminMenu()
+	// if user == "admin" {
+	// 	AdminMenu()
 
-	} else if user == "customer" {
-		CustomerMenu()
-	}
+	// } else if user == "customer" {
+	// 	CustomerMenu()
+	// }
 
 }
 
@@ -38,13 +38,13 @@ func AdminMenu() {
 		fmt.Scanln(&choice)
 		switch choice {
 		case 1:
-			handler.AddProduct()
+			// handler.AddProduct()
 		case 2:
-			handler.AddEmployee()
+			// handler.AddEmployee()
 		case 3:
-			handler.OrderReports()
+			// handler.OrderReports()
 		case 4:
-			handler.StockReports()
+			// handler.StockReports()
 		case 5:
 			fmt.Println("Exit")
 			return
@@ -65,7 +65,7 @@ func CustomerMenu() {
 		fmt.Scanln(&choice)
 		switch choice {
 		case 1:
-			handler.BuyProduct()
+			// handler.BuyProduct()
 		case 5:
 			fmt.Println("Exit")
 			return
