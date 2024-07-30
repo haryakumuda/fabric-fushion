@@ -58,3 +58,20 @@ func GetUser(db *sql.DB, user model.UserLogin) (bool, string) {
 	// If we reach here, a matching user was found
 	return true, role
 }
+
+func AddEmployee(db *sql.DB, customer model.Customer) (int64, error) {
+	query := `INSERT INTO customers (user_id, email, name, phone_number) VALUES (?, ?, ?, ?)`
+	result, err := db.Exec(query, customer.UserId, customer.Email, customer.Name, customer.PhoneNumber)
+	if err != nil {
+		return 0, err
+	}
+
+	// Get the ID of the newly inserted row
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	log.Println("Customer added successfully with ID:", id)
+	return id, nil
+}

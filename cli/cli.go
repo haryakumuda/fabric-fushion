@@ -15,11 +15,11 @@ func RunCLI(db *sql.DB) {
 	user := Login(db)
 
 	if user == "admin" {
-		// AdminMenu()
+		AdminMenu()
 		fmt.Println("ADMIN MENU!!!")
 
 	} else if user == "customer" {
-		// CustomerMenu()
+		CustomerMenu()
 		fmt.Println("CUSTOMER MENU!!!")
 	} else {
 
