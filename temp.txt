@@ -1,0 +1,57 @@
+1. Database
+A. Table User
+- Email
+- Password
+- Role
+
+B. Employee
+- email
+- id
+- name
+- position
+
+
+C. Customer
+- email
+- id
+- name
+- phone_number
+
+
+D. Product
+- id
+- name
+- price
+- category
+
+E. Order
+- id
+- date
+- customer
+
+
+
+2. Fitur
+
+NotLogin:
+- Sign Up
+
+Employee:
+- Add Product
+- Add Employee
+- Order Reports
+- Stock Reports
+- User Reports
+
+Customer:
+- Show list product
+- Buy Product
+
+
+
+
+
+
+
+
+
