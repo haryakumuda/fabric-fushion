@@ -25,7 +25,7 @@ func Welcome() {
 	fmt.Println()
 }
 
-func Login(db *sql.DB) string {
+func Login(db *sql.DB) (string, int) {
 	fmt.Printf("Enter Your Email: ")
 	var email string
 	fmt.Scanln(&email)
@@ -39,12 +39,11 @@ func Login(db *sql.DB) string {
 		Password: password,
 	}
 
-	result, role := database.GetUser(db, userLogin)
-
+	result, role, customerID := database.GetUser(db, userLogin)
 	if result {
-		return role
+		return role, customerID
 	} else {
-		return "invalid"
+		return "invalid", 0
 	}
 
 }

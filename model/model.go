@@ -1,5 +1,9 @@
 package model
 
+import (
+	"time"
+)
+
 type User struct {
 	Id       int64
 	Email    string
@@ -26,4 +30,17 @@ type Employee struct {
 	Email    string
 	Name     string
 	Position string
+}
+
+type Products struct {
+	ID       int
+	Name     string
+	Price    float64
+	Category string
+}
+
+type Sales struct {
+	ID         int
+	OrderDate  time.Time
+	CustomerId int64
 }

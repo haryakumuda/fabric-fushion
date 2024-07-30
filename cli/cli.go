@@ -12,7 +12,7 @@ func RunCLI(db *sql.DB) {
 	handler.Welcome()
 
 	// SignUp
-	user := Login(db)
+	user, customerID := Login(db)
 
 	if user == "admin" {
 		fmt.Println("ADMIN MENU!!!")
@@ -20,9 +20,8 @@ func RunCLI(db *sql.DB) {
 
 	} else if user == "customer" {
 		fmt.Println("CUSTOMER MENU!!!")
-		CustomerMenu(db)
+		CustomerMenu(db, customerID)
 	} else {
-
 		fmt.Println("Goodbye!")
 		os.Exit(1)
 
@@ -30,7 +29,7 @@ func RunCLI(db *sql.DB) {
 
 }
 
-func Login(db *sql.DB) string {
+func Login(db *sql.DB) (string, int) {
 	for {
 
 		fmt.Println("\nSelect Menu:")
@@ -44,9 +43,9 @@ func Login(db *sql.DB) string {
 
 		switch choice {
 		case 1:
-			result := handler.Login(db)
+			result, customerID := handler.Login(db)
 			if result != "invalid" {
-				return result
+				return result, customerID
 			} else {
 				fmt.Println("Invalid email or password")
 			}
@@ -54,7 +53,7 @@ func Login(db *sql.DB) string {
 			handler.SignUp(db)
 		case 0:
 			fmt.Println("Exit")
-			return "exit"
+			return "exit", 0
 		}
 	}
 }
@@ -88,8 +87,7 @@ func AdminMenu(db *sql.DB) {
 
 }
 
-func CustomerMenu(db *sql.DB) {
-
+func CustomerMenu(db *sql.DB, customerID int) {
 	for {
 		fmt.Println("\nSelect Menu:")
 		fmt.Println("1. BuyProduct")
@@ -100,7 +98,7 @@ func CustomerMenu(db *sql.DB) {
 		fmt.Scanln(&choice)
 		switch choice {
 		case 1:
-			// handler.BuyProduct()
+			handler.BuyProduct(db, customerID)
 		case 0:
 			fmt.Println("Exit")
 			return

@@ -44,8 +44,12 @@ Employee:
 - User Reports
 
 Customer:
-- Show list product
-- Buy Product
+- Show list product ✅
+- Buy Product (sementara user hanya bisa membeli 1 product)
+
+next :
+- user bisa membeli lebih dari 1
+- mengupdate harga dan menyimpan ke database
 
 
 
