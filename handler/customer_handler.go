@@ -2,64 +2,70 @@ package handler
 
 import (
 	"database/sql"
+	database2 "fabric-fushion/database"
 	"fabric-fushion/model"
 	"fmt"
 	"log"
-	"time"
 )
 
 func BuyProduct(db *sql.DB, customerID int) {
-	products := showProduct(db)
+	//initialize struct db
+	dbInit := database2.Database{DB: db}
+	var selectedProducts []model.Products
+	var category model.Categories
 
-	if len(products) == 0 {
-		fmt.Println("No Product Available.")
-		return
-	}
+	for {
+		//display product
+		products := showProduct(db)
 
-	var productID int
-	fmt.Scanln(&productID)
-
-	var selectedProduct *model.Products
-	for _, product := range products {
-		if product.ID == productID {
-			selectedProduct = &product
-			break
+		if len(products) == 0 {
+			fmt.Println("No Product Available.")
+			return
 		}
-	}
-	if selectedProduct == nil {
-		fmt.Println("Product Not Found")
-		return
-	}
 
-	fmt.Printf("You Selected Id : %d\n,Name : %s\n , Price : %.2f\n,Category : %s\n", selectedProduct.ID, selectedProduct.Name, selectedProduct.Price, selectedProduct.Category)
+		//Prompt user to choose a Product Id
+		var productId int
+		fmt.Print("Choose Your Product ID: ")
+		fmt.Scan(&productId)
 
-	//insert to table sales
-	query := `Insert into sales(order_date, customer_id) values (?,?)`
-	_, err := db.Exec(query, time.Now(), customerID)
-	if err != nil {
-		log.Fatalf("Failed to insert row : %v", err)
+		//find select product
+		var selectedProduct *model.Products
+		for _, product := range products {
+			if product.ID == productId {
+				selectedProduct = &product
+				break
+			}
+		}
+		if selectedProduct == nil {
+			fmt.Println("Product Not Found . Please choose a valid Product ID . ")
+			continue
+		}
+		// Add selected Product to the list
+		selectedProducts = append(selectedProducts, *selectedProduct)
+		fmt.Printf("You Selected Id : %d\n Name : %s\n Price : %.2f Category : %s", selectedProduct.ID, selectedProduct.Name, selectedProduct.Price, category.Category)
+
 	}
-
-	fmt.Println("Thank you for your purchase!")
 }
 
 // showProduct show list product
 func showProduct(db *sql.DB) []model.Products {
-	query := `select id,name,price,category from products`
-	rows, err := db.Query(query)
+	//initialize struct DB
+	dbInit := database2.Database{DB: db}
+	rows, err := dbInit.ShowProducts()
+	var products []model.Products
+
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to show products: %s", err)
 	}
 	defer rows.Close()
 
-	var products []model.Products
-	fmt.Println("Available Product")
 	for rows.Next() {
 		var product model.Products
-		if err := rows.Scan(&product.ID, &product.Name, &product.Price, &product.Category); err != nil {
+		var category model.Categories
+		if err := rows.Scan(&product.ID, &product.Name, &product.Price, &category.Category); err != nil {
 			log.Fatalf("failed to scan product : %v", err)
 		}
-		fmt.Printf("ID : %d\n,Name : %s\n,Price : %f\n , category : %s\n", product.ID, product.Name, product.Price, product.Category)
+		fmt.Printf("ID : %d\n Name : %s\n Price : %.2f\n Category : %s\n", product.ID, product.Name, product.Price, category.Category)
 		products = append(products, product)
 	}
 
