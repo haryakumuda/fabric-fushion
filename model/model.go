@@ -6,13 +6,12 @@ type User struct {
 	Id       int64
 	Email    string
 	Password string
-	Role     string
+	RoleId   int64
 }
 
 type Customer struct {
 	Id          int64
 	UserId      int64
-	Email       string
 	Name        string
 	PhoneNumber string
 }
@@ -23,11 +22,10 @@ type UserLogin struct {
 }
 
 type Employee struct {
-	Id       int64
-	UserId   int64
-	Email    string
-	Name     string
-	Position string
+	Id         int64
+	UserId     int64
+	Name       string
+	PositionId int64
 }
 
 type Products struct {

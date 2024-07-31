@@ -39,8 +39,16 @@ func Login(db *sql.DB) (string, int) {
 		Password: password,
 	}
 
-	result, role, customerID := database.GetUser(db, userLogin)
+	result, roleId, customerID := database.GetUser(db, userLogin)
+	var role string
 	if result {
+		if roleId == 1 {
+			role = "admin"
+		} else if roleId == 2 {
+			role = "customer"
+		} else {
+			role = "invalid"
+		}
 		return role, customerID
 	} else {
 		return "invalid", 0
@@ -65,11 +73,12 @@ func SignUp(db *sql.DB) {
 	var phoneNumber string
 	fmt.Scanln(&phoneNumber)
 
-	fmt.Println("\nAre you sure want to create user? (y/n)")
+	fmt.Println("--- Data Summary ---")
 	fmt.Println("Name: ", name)
 	fmt.Println("Email: ", email)
 	fmt.Println("Password: ", password)
 	fmt.Println("Phone Number: ", phoneNumber)
+	fmt.Printf("\nAre you sure want to create user? (y/n)")
 	for {
 		var answer string
 		fmt.Scanln(&answer)
@@ -88,7 +97,7 @@ func SignUp(db *sql.DB) {
 		Id:       0,
 		Email:    email,
 		Password: password,
-		Role:     "customer",
+		RoleId:   2,
 	}
 
 	id, err := database.AddUser(db, user)
@@ -100,7 +109,6 @@ func SignUp(db *sql.DB) {
 	customer := model.Customer{
 		Id:          0,
 		UserId:      id,
-		Email:       email,
 		Name:        name,
 		PhoneNumber: phoneNumber,
 	}
@@ -130,11 +138,12 @@ func AddEmployee(db *sql.DB) {
 	var position string
 	fmt.Scanln(&position)
 
-	fmt.Println("\nAre you sure want to create user? (y/n)")
+	fmt.Println("--- Data Summary ---")
 	fmt.Println("Name: ", name)
 	fmt.Println("Email: ", email)
 	fmt.Println("Password: ", password)
 	fmt.Println("Position: ", position)
+	fmt.Println("\nAre you sure want to create user? (y/n)")
 	for {
 		var answer string
 		fmt.Scanln(&answer)
@@ -153,7 +162,7 @@ func AddEmployee(db *sql.DB) {
 		Id:       0,
 		Email:    email,
 		Password: password,
-		Role:     "admin",
+		RoleId:   1,
 	}
 
 	id, err := database.AddUser(db, user)
@@ -163,11 +172,10 @@ func AddEmployee(db *sql.DB) {
 	}
 
 	employee := model.Employee{
-		Id:       0,
-		UserId:   id,
-		Email:    email,
-		Name:     name,
-		Position: position,
+		Id:         0,
+		UserId:     id,
+		Name:       name,
+		PositionId: 1,
 	}
 
 	_, err = database.AddEmployee(db, employee)
