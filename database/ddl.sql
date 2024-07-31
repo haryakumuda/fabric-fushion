@@ -61,6 +61,7 @@ CREATE TABLE products (
     category_id INT UNSIGNED,
     name VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
+    stock int not null,
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
