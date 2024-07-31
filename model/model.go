@@ -28,14 +28,6 @@ type Employee struct {
 	PositionId int64
 }
 
-type Products struct {
-	ID       int
-	Name     string
-	Price    float64
-	Category string
-	Stock    int
-}
-
 type Sales struct {
 	ID         int
 	OrderDate  time.Time
