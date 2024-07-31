@@ -47,17 +47,18 @@ INSERT INTO categories (category) VALUES
 ('Outerwear');
 
 -- Insert products
-INSERT INTO products (category_id, name, price) VALUES
-(1, 'T-Shirt', 19.99),
-(1, 'Blouse', 29.99),
-(2, 'Jeans', 49.99),
-(2, 'Shorts', 25.99),
-(3, 'Sneakers', 79.99),
-(3, 'Boots', 129.99),
-(4, 'Watch', 99.99),
-(4, 'Hat', 15.99),
-(5, 'Jacket', 89.99),
-(5, 'Coat', 129.99);
+INSERT INTO products (category_id, name, price, stock) VALUES
+(1, 'T-Shirt', 19.99, 1),
+(1, 'Blouse', 29.99, 2),
+(2, 'Jeans', 49.99, 3),
+(2, 'Shorts', 25.99, 6),
+(3, 'Sneakers', 79.99, 999),
+(3, 'Boots', 129.99, 100),
+(4, 'Watch', 99.99, 8),
+(4, 'Hat', 15.99, 123),
+(5, 'Jacket', 89.99, 888),
+(5, 'Coat', 129.99, 9191);
+
 -- Insert sales
 INSERT INTO sales (customer_id, order_date) VALUES
 (1, '2024-07-30 10:00:00'),

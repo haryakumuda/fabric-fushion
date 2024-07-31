@@ -29,10 +29,11 @@ type Employee struct {
 }
 
 type Products struct {
-	ID         int
-	Name       string
-	Price      float64
-	CategoryID int
+	ID       int
+	Name     string
+	Price    float64
+	Category string
+	Stock    int
 }
 
 type Sales struct {
@@ -41,14 +42,10 @@ type Sales struct {
 	CustomerId int64
 }
 
-type Categories struct {
-	ID       int
-	Category string
-}
-
-type SalesProduct struct {
-	ID        int
-	SaleID    int
-	ProductId int
-	Quantity  int
+type Product struct {
+	ID         uint
+	CategoryID uint
+	Name       string
+	Price      float64
+	Stock      int
 }

@@ -72,19 +72,18 @@ func AdminMenu(db *sql.DB) {
 		fmt.Scanln(&choice)
 		switch choice {
 		case 1:
-			// handler.AddProduct()
+			handler.AddProduct(db)
 		case 2:
 			handler.AddEmployee(db)
-		case 3:
-			// handler.OrderReports()
-		case 4:
-			// handler.StockReports()
+		// case 3:
+		// 	handler.OrderReports(db)
+		// case 4:
+		// 	handler.StockReports(db)
 		case 0:
 			fmt.Println("Exit")
 			return
 		}
 	}
-
 }
 
 func CustomerMenu(db *sql.DB, customerID int) {
