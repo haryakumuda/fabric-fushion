@@ -64,7 +64,7 @@ func AdminMenu(db *sql.DB) {
 		fmt.Println("1. Add Product")
 		fmt.Println("2. Add Employee")
 		fmt.Println("3. Order Reports")
-		fmt.Println("4. Stock Reprots")
+		fmt.Println("4. Stock Reports")
 		fmt.Println("0. Exit")
 		fmt.Printf("\nEnter the number of the menu you want to access: ")
 

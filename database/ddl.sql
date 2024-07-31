@@ -1,37 +1,36 @@
-CREATE DATABASE fabric_fushion;
-USE DATABASE fabric_fushion;
+CREATE DATABASE railway;
+USE railway;
 
 -- table roles
-create table roles (
-    id int unsigned auto_increment primary key,
-    role varchar(10)
+CREATE TABLE roles (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    role VARCHAR(10)
 );
 
 -- table users
-create table users (
-    id int unsigned auto_increment primary key,
-    role_id unsigned,
-    email varchar(255) unique,
-    password varchar(255) not null,
-    foreign key (role_id) references roles(id)
+CREATE TABLE users (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    role_id INT UNSIGNED,
+    email VARCHAR(255) UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 -- table positions
-create table positions (
-    id int unsigned auto_increment primary key,
-    position varchar(10)
+CREATE TABLE positions (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    position VARCHAR(10)
 );
 
 -- table employees
-create table employees (
-    id int unsigned auto_increment primary key,
-    position_id int unsigned,
-    user_id int unsigned,
-    name varchar(225),
-    foreign key (position_id) references positions(id)
-    foreign key (user_id) references users(id)
+CREATE TABLE employees (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    position_id INT UNSIGNED,
+    user_id INT UNSIGNED,
+    name VARCHAR(225),
+    FOREIGN KEY (position_id) REFERENCES positions(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
-
 
 -- Table Customers
 CREATE TABLE customers (
@@ -43,37 +42,34 @@ CREATE TABLE customers (
 );
 
 -- Table Sales
-CREATE TABLE
-  sales (
+CREATE TABLE sales (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     customer_id INT UNSIGNED,
     order_date DATETIME NOT NULL,
     FOREIGN KEY (customer_id) REFERENCES customers(id)
-  );
+);
 
 -- table categories
-create table categories (
-    id int unsigned auto_increment primary key,
-    category varchar(10)
+CREATE TABLE categories (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    category VARCHAR(10)
 );
 
 -- Table Products
-CREATE TABLE
-  products (
+CREATE TABLE products (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    category_id int unsigned,
+    category_id INT UNSIGNED,
     name VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    foreign key (category_id) references categories(id)
+    FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
--- Table Products
+-- Table sales_products
 CREATE TABLE sales_products (
-    id int unsigned auto_increment primary key,
-    sale_id int unsigned,
-    product_id int unsigned,
-    quantity int,
-    foreign key (sale_id) references sales(id),
-    foreign key (product_id) references products(id)
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    sale_id INT UNSIGNED,
+    product_id INT UNSIGNED,
+    quantity INT,
+    FOREIGN KEY (sale_id) REFERENCES sales(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
 );
-

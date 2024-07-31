@@ -1,7 +1,7 @@
 -- Insert roles
 INSERT INTO roles (role) VALUES 
 ('admin'), 
-('employee');
+('customer');
 
 -- Insert users
 INSERT INTO users (role_id, email, password) VALUES
@@ -19,7 +19,7 @@ INSERT INTO users (role_id, email, password) VALUES
 -- Insert positions
 INSERT INTO positions (position) VALUES 
 ('Manager'), 
-('Sales Associate'),
+('Sales'),
 ('Intern');
 
 -- Insert employees
@@ -43,7 +43,7 @@ INSERT INTO categories (category) VALUES
 ('Tops'), 
 ('Bottoms'), 
 ('Footwear'), 
-('Accessories'), 
+('Accs'), 
 ('Outerwear');
 
 -- Insert products
@@ -58,7 +58,6 @@ INSERT INTO products (category_id, name, price) VALUES
 (4, 'Hat', 15.99),
 (5, 'Jacket', 89.99),
 (5, 'Coat', 129.99);
-
 -- Insert sales
 INSERT INTO sales (customer_id, order_date) VALUES
 (1, '2024-07-30 10:00:00'),
@@ -70,12 +69,8 @@ INSERT INTO sales (customer_id, order_date) VALUES
 -- Insert sales_products
 INSERT INTO sales_products (sale_id, product_id, quantity) VALUES
 (1, 1, 2),
-(1, 3, 1),
 (2, 2, 1),
-(2, 4, 2),
-(3, 5, 1),
-(3, 7, 2),
-(4, 6, 1),
-(4, 8, 1),
-(5, 9, 3),
-(5, 10, 1);
+(3, 3, 3),
+(4, 4, 2),
+(5, 5, 1);
+
