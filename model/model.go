@@ -49,12 +49,3 @@ type Product struct {
 	Price      float64
 	Stock      int
 }
-
-type Order struct {
-	ID         uint
-	CustomerID uint
-	ProductID  uint
-	Quantity   int
-	TotalPrice float64
-	OrderDate  string
-}
