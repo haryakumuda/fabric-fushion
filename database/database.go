@@ -14,7 +14,9 @@ var conn *sql.DB
 // GenerateDatabase initializes the global database connection.
 func GenerateDatabase() {
 	var err error
-	conn, err = sql.Open("mysql", config.DatabaseConfig())
+	dsn := config.DatabaseConfig()
+	// dsn := "root:oOxPeoXhtQxVUWIrYMkUnXHIjdbXtQlc@tcp(viaduct.proxy.rlwy.net:36162)/railway"
+	conn, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("Error Loading Database: ", err)
 	}
