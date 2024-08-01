@@ -21,10 +21,12 @@ func AddProduct(db *sql.DB) {
 	fmt.Scanln(&product.Name)
 
 	var categoriesId []int64
-
+	categoryMap := make(map[int64]string)
 	for _, category := range categories {
+
 		fmt.Printf("%d: %s\n", category.ID, category.Category)
 		categoriesId = append(categoriesId, int64(category.ID))
+		categoryMap[category.ID] = category.Category
 	}
 	fmt.Println("Enter Product Category ID:")
 	for {
@@ -69,9 +71,96 @@ func AddProduct(db *sql.DB) {
 		}
 	}
 
-	database.AddProduct(db, product)
+	fmt.Println("--- Product Summary ---")
 
-	fmt.Println("Product added successfully!")
+	fmt.Println("Product Name: ", product.Name)
+	fmt.Println("Product Price: ", product.Price)
+	fmt.Println("Product Stock: ", product.Stock)
+	fmt.Println("Product Category: ", categoryMap[product.CategoryID])
+	fmt.Println("Are you sure want to add new product? (y/n)")
+	var confirmation string
+	for {
+		fmt.Scanln(&confirmation)
+		if confirmation == "y" || confirmation == "yes" {
+			// Call the function
+			_, err := database.AddProduct(db, product)
+			if err != nil {
+				fmt.Println("Error deleting product: ", err)
+			} else {
+				fmt.Println("Product added successfully!")
+			}
+			break
+		} else if confirmation == "n" || confirmation == "no" {
+			fmt.Println("Add product cancelled.")
+			break
+		} else {
+			fmt.Printf("Please input valid input: ")
+		}
+
+	}
+
+}
+
+func DeleteProduct(db *sql.DB) {
+	fmt.Println()
+
+	products, err := database.ShowProducts(db)
+	if err != nil {
+		fmt.Println("Error showing products: ", err)
+		return
+	}
+	// Create a map to store product details by ID
+	productMap := make(map[int64]struct {
+		Name string
+	})
+
+	var productsId []int64
+	productsId = append(productsId, 0)
+	for _, product := range products {
+		fmt.Printf("%d: %s\n", product.ID, product.Name)
+		productsId = append(productsId, int64(product.ID))
+		productMap[int64(product.ID)] = struct {
+			Name string
+		}{Name: product.Name}
+	}
+
+	fmt.Printf("Enter the product ID you wish to delete: ")
+
+	for {
+		var inputID int64
+		fmt.Scanln(&inputID)
+
+		if contains(productsId, inputID) {
+			productName := productMap[inputID].Name
+			// Ask for user confirmation
+			fmt.Printf("Are you sure you want to delete '%s'? (y/n): ", productName)
+
+			var confirmation string
+			for {
+				fmt.Scanln(&confirmation)
+				if confirmation == "y" || confirmation == "yes" {
+					// Call the function
+					_, err := database.DeleteProduct(db, inputID)
+					if err != nil {
+						fmt.Println("Error deleting product: ", err)
+					} else {
+						fmt.Println("Product deleted successfully.")
+					}
+					break
+				} else if confirmation == "n" || confirmation == "no" {
+					fmt.Println("Deletion cancelled.")
+					break
+				} else {
+					fmt.Printf("Please input valid input: ")
+				}
+
+			}
+
+		} else {
+			fmt.Println("Please Input correct ID")
+		}
+	}
+
 }
 
 // Helper function to check if an ID exists in a slice

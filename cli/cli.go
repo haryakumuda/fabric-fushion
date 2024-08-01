@@ -35,7 +35,7 @@ func Login(db *sql.DB) (string, int) {
 		fmt.Println("\nSelect Menu:")
 		fmt.Println("1. Login")
 		fmt.Println("2. Sign Up")
-		fmt.Println("0. Exit")
+		fmt.Println("99. Exit")
 
 		fmt.Printf("\nEnter the number of the menu you want to access: ")
 		var choice int
@@ -51,10 +51,13 @@ func Login(db *sql.DB) (string, int) {
 			}
 		case 2:
 			handler.SignUp(db)
-		case 0:
+		case 99:
 			fmt.Println("Exit")
 			return "exit", 0
+		default:
+			fmt.Println("Please input valid number")
 		}
+
 	}
 }
 
@@ -65,7 +68,8 @@ func AdminMenu(db *sql.DB) {
 		fmt.Println("2. Add Employee")
 		fmt.Println("3. Order Reports")
 		fmt.Println("4. Stock Reports")
-		fmt.Println("0. Exit")
+		fmt.Println("5. Delete Product")
+		fmt.Println("99. Exit")
 		fmt.Printf("\nEnter the number of the menu you want to access: ")
 
 		var choice int
@@ -79,9 +83,13 @@ func AdminMenu(db *sql.DB) {
 			handler.OrderReports(db)
 		case 4:
 			handler.StockReports(db)
-		case 0:
+		case 5:
+			handler.DeleteProduct(db)
+		case 99:
 			fmt.Println("Exit")
 			return
+		default:
+			fmt.Println("Please input valid number")
 		}
 	}
 }
@@ -90,7 +98,7 @@ func CustomerMenu(db *sql.DB, customerId int) {
 	for {
 		fmt.Println("\nSelect Menu:")
 		fmt.Println("1. BuyProduct")
-		fmt.Println("0. Exit")
+		fmt.Println("99. Exit")
 		fmt.Printf("\nEnter the number of the menu you want to access: ")
 
 		var choice int
@@ -98,9 +106,11 @@ func CustomerMenu(db *sql.DB, customerId int) {
 		switch choice {
 		case 1:
 			handler.BuyProduct(db, customerId)
-		case 0:
+		case 99:
 			fmt.Println("Exit")
 			return
+		default:
+			fmt.Println("Please input valid number")
 		}
 	}
 
