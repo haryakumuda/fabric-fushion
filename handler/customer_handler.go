@@ -6,6 +6,7 @@ import (
 	"fabric-fushion/model"
 	"fmt"
 	"log"
+	"strings"
 )
 
 func BuyProduct(db *sql.DB, customerId int) {
@@ -16,7 +17,7 @@ func BuyProduct(db *sql.DB, customerId int) {
 
 	for {
 		// Display product
-		products := showProduct(db)
+		products := ShowProduct(db)
 
 		if len(products) == 0 {
 			fmt.Println("No Product Available.")
@@ -50,9 +51,10 @@ func BuyProduct(db *sql.DB, customerId int) {
 
 		// Ask if user wants to buy more products
 		var choice string
-		fmt.Print("Do you want to buy another product? (yes/no): ")
+		fmt.Print("Do you want to buy another product? (y/n): ")
 		fmt.Scan(&choice)
-		if choice != "yes" {
+		choice = strings.ToLower(choice)
+		if choice != "y" && choice != "yes" {
 			break
 		}
 	}
@@ -60,6 +62,14 @@ func BuyProduct(db *sql.DB, customerId int) {
 	if len(selectedProducts) == 0 {
 		fmt.Println("No Product Selected.")
 		return
+	}
+
+	// stok product -1
+	for _, product := range selectedProducts {
+		if err := dbInit.UpdateProductStock(product.ID, -1); err != nil {
+			fmt.Printf("Failed to update stock for Product ID %d: %v\n", product.ID, err)
+			return
+		}
 	}
 
 	// Call store procedure to save data sales
@@ -78,8 +88,8 @@ func BuyProduct(db *sql.DB, customerId int) {
 	fmt.Println("Thank you for your purchase!")
 }
 
-// showProduct show list product
-func showProduct(db *sql.DB) []model.Product {
+// ShowProduct show list product
+func ShowProduct(db *sql.DB) []model.Product {
 	//initialize struct DB
 	dbInit := database2.Database{DB: db}
 	rows, err := dbInit.ShowProducts()
@@ -106,4 +116,43 @@ func showProduct(db *sql.DB) []model.Product {
 	}
 
 	return products
+}
+
+// OrderHistory show orderHistory Data
+func OrderHistory(db *sql.DB, customerID int) {
+	//initialize Database
+	//format Date
+	dateFormat := "2006-01-02 15:04:05"
+	dbInit := database2.Database{DB: db}
+
+	orders, err := dbInit.GetOrderHistory(customerID)
+	if err != nil {
+		log.Fatalf("Error querying orders for customerID %d: %v", customerID, err)
+	}
+
+	for _, order := range orders {
+		productRows, err := dbInit.GetProductsForOrder(order.ID)
+		if err != nil {
+			log.Fatalf("Error getting products for orderID %d: %v", order.ID, err)
+		}
+		defer productRows.Close()
+
+		//formatDate
+		formattedDate := order.OrderDate.Format(dateFormat)
+		fmt.Printf("Order ID: %d, Order Date: %s\n", order.ID, formattedDate)
+		for productRows.Next() {
+			var detail model.SalesProductDetail
+			if err := productRows.Scan(&detail.ID, &detail.SaleID, &detail.ProductID, &detail.Quantity, &detail.Name, &detail.Price, &detail.CategoryID, &detail.Category); err != nil {
+				log.Fatalf("Error scanning product detail: %v", err)
+			}
+			fmt.Printf("Product ID: %d, Name: %s, Quantity: %d, Price: %.2f, Category: %s\n",
+				detail.ProductID, detail.Name, detail.Quantity, detail.Price, detail.Category)
+		}
+
+		if err := productRows.Err(); err != nil {
+			log.Fatalf("Error iterating over product rows: %v", err)
+		}
+
+		fmt.Println()
+	}
 }

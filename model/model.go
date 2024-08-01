@@ -54,3 +54,23 @@ type ShowCustomer struct {
 	Name       string
 	Email      string
 }
+
+// SalesProduct represents the sales_products table
+type SalesProduct struct {
+	ID        int64
+	SaleID    int64
+	ProductID int64
+	Quantity  int
+}
+
+// SalesProductDetail represents the detail of products in sales_products
+type SalesProductDetail struct {
+	ID         int64
+	SaleID     int64
+	ProductID  int64
+	Quantity   int
+	Name       string
+	Price      float64
+	CategoryID int64
+	Category   string
+}
