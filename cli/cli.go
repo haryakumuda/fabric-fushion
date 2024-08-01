@@ -89,18 +89,30 @@ func AdminMenu(db *sql.DB) {
 func CustomerMenu(db *sql.DB, customerId int) {
 	for {
 		fmt.Println("\nSelect Menu:")
-		fmt.Println("1. BuyProduct")
+		fmt.Println("1. ShowProduct")
+		fmt.Println("2. BuyProduct")
+		fmt.Println("3. OrderHistory")
 		fmt.Println("0. Exit")
 		fmt.Printf("\nEnter the number of the menu you want to access: ")
 
 		var choice int
-		fmt.Scanln(&choice)
+		_, err := fmt.Scan(&choice)
+		if err != nil {
+			fmt.Println(err)
+		}
+
 		switch choice {
 		case 1:
+			handler.ShowProduct(db)
+		case 2:
 			handler.BuyProduct(db, customerId)
+		case 3:
+			handler.OrderHistory(db, customerId)
 		case 0:
 			fmt.Println("Exit")
 			return
+		default:
+			fmt.Println("invalid number , please try again")
 		}
 	}
 

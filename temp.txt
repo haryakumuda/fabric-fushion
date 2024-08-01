@@ -56,11 +56,11 @@ next :
 -------------------------------------------------------
 
 User:
-- BuyProduct - Agar balik lagi ke menu, jangan langsung exit
-- Tambah fitur Showlist, bisa gunakan dari function yg dari buyproduct
-- Tambah Fitur Order History by User yg login
-- BuyProduct - agar mengurangi stock
-- Jika stock kosong dan pembeli maksa beli, maka bilang stock habis
+- BuyProduct - Agar balik lagi ke menu, jangan langsung exit ✅
+- Tambah fitur Showlist, bisa gunakan dari function yg dari buyproduct ✅
+- Tambah Fitur Order History by User yg login ✅
+- BuyProduct - agar mengurangi stock ✅
+- Jika stock kosong dan pembeli maksa beli, maka bilang stock habis ✅
 
 
 Admin:
