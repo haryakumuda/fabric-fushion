@@ -40,4 +40,10 @@ type Product struct {
 	Name       string
 	Price      float64
 	Stock      int
+	Category   string
+}
+
+type Categories struct {
+	ID       uint
+	Category string
 }

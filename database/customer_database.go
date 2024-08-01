@@ -2,6 +2,8 @@ package database
 
 import (
 	"database/sql"
+	"encoding/json"
+	"fabric-fushion/helper"
 	"log"
 	"time"
 )
@@ -10,11 +12,17 @@ type Database struct {
 	DB *sql.DB
 }
 
-func (db *Database) InsertSale(CustomerID int) error {
-	query := `Insert into sales(order_date, customer_id) values (?,?)`
-	_, err := db.DB.Exec(query, time.Now(), CustomerID)
+func (db *Database) InsertSale(CustomerID int, products map[int]int) error {
+	productsJSON, err := json.Marshal(helper.ConvertToJSON(products))
 	if err != nil {
-		log.Fatalf("Failed to insert row : %v", err)
+		return err
+	}
+
+	// call store procedure
+	query := `Call InsertSale(?,?,?)`
+	_, err = db.DB.Exec(query, CustomerID, time.Now(), productsJSON)
+	if err != nil {
+		return err
 	}
 	return nil
 }

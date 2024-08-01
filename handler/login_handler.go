@@ -39,7 +39,7 @@ func Login(db *sql.DB) (string, int) {
 		Password: password,
 	}
 
-	result, roleId, customerID := database.GetUser(db, userLogin)
+	result, roleId, _, customerID := database.GetUser(db, userLogin)
 	var role string
 	if result {
 		if roleId == 1 {
