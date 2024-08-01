@@ -53,10 +53,31 @@ next :
 
 
 
+-------------------------------------------------------
+
+User:
+- BuyProduct - Agar balik lagi ke menu, jangan langsung exit
+- Tambah fitur Showlist, bisa gunakan dari function yg dari buyproduct
+- Tambah Fitur Order History by User yg login
+- BuyProduct - agar mengurangi stock
+- Jika stock kosong dan pembeli maksa beli, maka bilang stock habis
+
+
+Admin:
+- Tambah Fitur Delete Product
+- Tambah Fitur Delete User
+- Tambah Fitur Delete Employee
+- Tambah Fitur Set Stock
+- Order Report diubah menjadi report penjualan per tanggal
+- Tambah Fitur User Report: menggunakan order report existing yang dimodif
+user report -> show ID pelanggan -> milih id pelanggan -> show report untuk pelanggan yang dipilih
+- Format reports agar mudah dibaca
+
+
+all yes/no question inputnya "y" / "n"
 
 
 
-
-
-
+UNIT TEST:
+- tiap function 
 
