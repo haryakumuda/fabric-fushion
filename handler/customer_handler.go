@@ -8,14 +8,14 @@ import (
 	"log"
 )
 
-func BuyProduct(db *sql.DB, customerID int) {
-	//initialize struct db
+func BuyProduct(db *sql.DB, customerId int) {
+	// Initialize struct db
 	dbInit := database2.Database{DB: db}
 	var selectedProducts []model.Product
-	var category model.Categories
+	productQuantities := make(map[int]int)
 
 	for {
-		//display product
+		// Display product
 		products := showProduct(db)
 
 		if len(products) == 0 {
@@ -23,12 +23,12 @@ func BuyProduct(db *sql.DB, customerID int) {
 			return
 		}
 
-		//Prompt user to choose a productID
+		// Prompt user to choose a productID
 		var productId uint
 		fmt.Print("Choose Your Product ID: ")
 		fmt.Scan(&productId)
 
-		//find select product
+		// Find selected product
 		var selectedProduct *model.Product
 		for _, product := range products {
 			if product.ID == productId {
@@ -37,35 +37,35 @@ func BuyProduct(db *sql.DB, customerID int) {
 			}
 		}
 		if selectedProduct == nil {
-			fmt.Println("Product Not Found . Please choose a valid Product ID . ")
+			fmt.Println("Product Not Found. Please choose a valid Product ID.")
 			continue
 		}
+
 		// Add selected Product to the list
 		selectedProducts = append(selectedProducts, *selectedProduct)
-		fmt.Printf("You Selected Id : %d\n Name : %s\n Price : %.2f Category : %s", selectedProduct.ID, selectedProduct.Name, selectedProduct.Price, category.Category)
+		fmt.Printf("You Selected Id: %d\n Name: %s\n Price: %.2f\n Category: %s\n",
+			selectedProduct.ID, selectedProduct.Name, selectedProduct.Price, selectedProduct.Category)
 
-		// Ask if user wants to buy more product
+		productQuantities[int(selectedProduct.ID)] = 1
+
+		// Ask if user wants to buy more products
 		var choice string
-		fmt.Print("Do you want to buy another product ? (yes/no) : ")
+		fmt.Print("Do you want to buy another product? (yes/no): ")
 		fmt.Scan(&choice)
 		if choice != "yes" {
 			break
 		}
 	}
+
 	if len(selectedProducts) == 0 {
-		fmt.Println("No Product Selected . ")
+		fmt.Println("No Product Selected.")
 		return
 	}
 
-	productQuantities := make(map[int]int)
-	for _, product := range selectedProducts {
-		productQuantities[int(product.ID)]++
-	}
-
-	//call store procedure for save data sales
-	err := dbInit.InsertSale(customerID, productQuantities)
+	// Call store procedure to save data sales
+	err := dbInit.InsertSale(customerId, productQuantities)
 	if err != nil {
-		fmt.Printf("Failed insert To table sales : %v", err)
+		fmt.Printf("Failed to insert into table sales: %v\n", err)
 		return
 	}
 
@@ -73,7 +73,7 @@ func BuyProduct(db *sql.DB, customerID int) {
 	fmt.Println("\nProducts you have purchased:")
 	for _, product := range selectedProducts {
 		fmt.Printf("ID: %d\n Name: %s\n Price: %.2f\n Category: %s\n",
-			product.ID, product.Name, product.Price, category.Category)
+			product.ID, product.Name, product.Price, product.Category)
 	}
 	fmt.Println("Thank you for your purchase!")
 }
@@ -92,11 +92,12 @@ func showProduct(db *sql.DB) []model.Product {
 
 	for rows.Next() {
 		var product model.Product
-		var category model.Categories
-		if err := rows.Scan(&product.ID, &product.Name, &product.Price, &category.Category); err != nil {
+		var category string
+		if err := rows.Scan(&product.ID, &product.Name, &product.Price, &category); err != nil {
 			log.Fatalf("failed to scan product : %v", err)
 		}
-		fmt.Printf("ID : %d\n Name : %s\n Price : %.2f\n Category : %s\n", product.ID, product.Name, product.Price, category.Category)
+		product.Category = category
+		fmt.Printf("ID : %d\n Name : %s\n Price : %.2f\n Category : %s\n", product.ID, product.Name, product.Price, product.Category)
 		products = append(products, product)
 	}
 
