@@ -75,19 +75,10 @@ func AdminMenu(db *sql.DB) {
 			handler.AddProduct(db)
 		case 2:
 			handler.AddEmployee(db)
-<<<<<<< HEAD
-		// case 3:
-		// 	handler.OrderReports(db)
-		// case 4:
-		// 	handler.StockReports(db)
-		// case 5:
-		// 	handler.UserReports(db)
-=======
 		case 3:
 			handler.OrderReports(db)
 		case 4:
 			handler.StockReports(db)
->>>>>>> c8689e3fe8be8a8b00e541fdade8b3e14bded3bb
 		case 0:
 			fmt.Println("Exit")
 			return
