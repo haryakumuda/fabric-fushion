@@ -2,76 +2,94 @@ package handler
 
 import (
 	"database/sql"
+	"fabric-fushion/database"
 	"fmt"
+	"strconv"
+	"strings"
 )
 
+// sales reports.
 func OrderReports(db *sql.DB) {
-	// Fetch the order details including product names, quantities, and customer names
-	rows, err := db.Query(`
-        SELECT sales.id AS order_id, 
-               customers.name AS customer_name, 
-               sales.order_date, 
-               products.name AS product_name, 
-               sales_products.quantity, 
-               (sales_products.quantity * products.price) AS total_amount
-        FROM sales
-        JOIN customers ON sales.customer_id = customers.id
-        JOIN sales_products ON sales.id = sales_products.sale_id
-        JOIN products ON sales_products.product_id = products.id
-        ORDER BY sales.order_date DESC
-    `)
+	reports, err := database.OrderReports(db)
 	if err != nil {
-		fmt.Println("Error fetching order reports:", err)
+		fmt.Println("Error fetching sales reports:", err)
 		return
 	}
-	defer rows.Close()
 
 	// Print header
-	fmt.Println("Order Reports:")
-	fmt.Println("Order ID | Customer Name | Date | Product | Quantity | Total Amount")
+	fmt.Println("Sales Reports:")
+	fmt.Println("Date       | Total Quantity | Total Amount")
 
-	// Iterate through rows
-	for rows.Next() {
-		var orderID int
-		var customerName, orderDate, productName string
-		var quantity int
-		var totalAmount float64
+	// Print the sales details
+	for _, report := range reports {
+		orderDate := report["order_date"].(string)
+		totalQuantity := report["total_quantity"].(int)
+		totalAmount := report["total_amount"].(float64)
 
-		// Scan the row into variables
-		err := rows.Scan(&orderID, &customerName, &orderDate, &productName, &quantity, &totalAmount)
-		if err != nil {
-			fmt.Println("Error scanning order report:", err)
-			return
-		}
-
-		// Print the order details
-		fmt.Printf("%d | %s | %s | %s | %d | %.2f\n", orderID, customerName, orderDate, productName, quantity, totalAmount)
+		fmt.Printf("%-10s | %-14d | %.2f\n",
+			orderDate, totalQuantity, totalAmount)
 	}
 }
 
+// StockReports displays stock reports with formatted output.
 func StockReports(db *sql.DB) {
-	rows, err := db.Query(`
-		select products.id, products.name, categories.category, products.stock
-		from products
-		join categories on products.category_id = categories.id
-		order by products.name
-	`)
+	reports, err := database.StockReports(db)
 	if err != nil {
 		fmt.Println("Error fetching stock reports:", err)
 		return
 	}
-	defer rows.Close()
 
 	fmt.Println("Stock Reports:")
-	fmt.Println("Product ID | Product Name | Category | Stock Level")
-	for rows.Next() {
-		var productID, stock int
-		var productName, categoryName string
-		err := rows.Scan(&productID, &productName, &categoryName, &stock)
-		if err != nil {
-			fmt.Println("Error scanning stock report:", err)
-			return
-		}
-		fmt.Printf("%d | %s | %s | %d\n", productID, productName, categoryName, stock)
+	fmt.Println("Product ID | Product Name                   | Category       | Stock Level")
+	fmt.Println(strings.Repeat("-", 70))
+
+	for _, report := range reports {
+		productID := report["product_id"].(int)
+		productName := report["product_name"].(string)
+		categoryName := report["category"].(string)
+		stock := report["stock"].(int)
+
+		fmt.Printf("%-10d | %-30s | %-14s | %-11d\n",
+			productID, productName, categoryName, stock)
+	}
+}
+
+func UserReports(db *sql.DB) {
+	fmt.Print("Masukkan ID pelanggan: ")
+	var input string
+	fmt.Scanln(&input)
+
+	customerID, err := strconv.Atoi(input)
+	if err != nil {
+		fmt.Println("ID pelanggan tidak valid.")
+		return
+	}
+
+	reports, err := database.UserReports(db, customerID)
+	if err != nil {
+		fmt.Println("Error fetching user reports:", err)
+		return
+	}
+
+	if len(reports) == 0 {
+		fmt.Println("Tidak ada laporan untuk ID pelanggan ini.")
+		return
+	}
+
+	// header
+	fmt.Println("User Reports:")
+	fmt.Println("Product ID | Product Name                   | Quantity | Total Price | Date       ")
+	fmt.Println(strings.Repeat("-", 70))
+
+	for _, report := range reports {
+		productID := report["product_id"].(int)
+		productName := report["product_name"].(string)
+		quantity := report["quantity"].(int)
+		totalPrice := report["total_price"].(float64)
+		orderDate := report["order_date"].(string)
+
+		// report
+		fmt.Printf("%-10d | %-30s | %-8d | %.2f       | %-10s\n",
+			productID, productName, quantity, totalPrice, orderDate)
 	}
 }
