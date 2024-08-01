@@ -163,6 +163,66 @@ func DeleteProduct(db *sql.DB) {
 
 }
 
+func DeleteCustomer(db *sql.DB) {
+	fmt.Println()
+
+	customers, err := database.ShowCustomer(db)
+	if err != nil {
+		fmt.Println("Error showing customer: ", err)
+		return
+	}
+	// Create a map to store product details by ID
+	customerMap := make(map[int64]model.ShowCustomer)
+
+	var customersId []int64
+	customersId = append(customersId, 0)
+	for _, customer := range customers {
+		fmt.Printf("%d: %s (%s)\n", customer.CustomerId, customer.Name, customer.Email)
+		customersId = append(customersId, int64(customer.CustomerId))
+		customerMap[int64(customer.CustomerId)] = customer
+	}
+
+	fmt.Printf("Enter the customer ID you wish to delete: ")
+
+	for {
+		var inputID int64
+		fmt.Scanln(&inputID)
+
+		if contains(customersId, inputID) {
+			customer := customerMap[inputID]
+			// Ask for user confirmation
+			fmt.Printf("Are you sure you want to delete '%s' (%s)? (y/n): ", customer.Name, customer.Email)
+
+			var confirmation string
+			for {
+				fmt.Scanln(&confirmation)
+				if confirmation == "y" || confirmation == "yes" {
+					// Call the function
+					_, err := database.DeleteCustomer(db, customer.CustomerId)
+					if err != nil {
+						fmt.Println("Error deleting product: ", err)
+						break
+					}
+					_, err = database.DeleteUser(db, customer.UserId)
+					if err != nil {
+						fmt.Println("Error deleting product: ", err)
+					} else {
+						fmt.Println("Product deleted successfully.")
+					}
+					break
+				} else if confirmation == "n" || confirmation == "no" {
+					fmt.Println("Deletion cancelled.")
+					break
+				} else {
+					fmt.Printf("Please input valid input: ")
+				}
+			}
+		} else {
+			fmt.Println("Please Input correct ID")
+		}
+	}
+}
+
 // Helper function to check if an ID exists in a slice
 func contains(slice []int64, id int64) bool {
 	for _, v := range slice {

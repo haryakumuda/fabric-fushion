@@ -69,6 +69,7 @@ func AdminMenu(db *sql.DB) {
 		fmt.Println("3. Order Reports")
 		fmt.Println("4. Stock Reports")
 		fmt.Println("5. Delete Product")
+		fmt.Println("6. Delete Customer")
 		fmt.Println("99. Exit")
 		fmt.Printf("\nEnter the number of the menu you want to access: ")
 
@@ -85,6 +86,8 @@ func AdminMenu(db *sql.DB) {
 			handler.StockReports(db)
 		case 5:
 			handler.DeleteProduct(db)
+		case 6:
+			handler.DeleteCustomer(db)
 		case 99:
 			fmt.Println("Exit")
 			return

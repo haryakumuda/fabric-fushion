@@ -65,7 +65,7 @@ User:
 
 Admin:
 - Tambah Fitur Delete Product
-- Tambah Fitur Delete User
+- Tambah Fitur Delete Customer
 - Tambah Fitur Delete Employee
 - Tambah Fitur Set Stock
 - Order Report diubah menjadi report penjualan per tanggal

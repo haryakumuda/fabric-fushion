@@ -47,3 +47,10 @@ type Categories struct {
 	ID       int64
 	Category string
 }
+
+type ShowCustomer struct {
+	UserId     int64
+	CustomerId int64
+	Name       string
+	Email      string
+}
