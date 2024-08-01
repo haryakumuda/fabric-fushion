@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func BuyProduct(db *sql.DB, customerId int) {
+func BuyProduct(db *sql.DB, customerId int) error {
 	// Initialize struct db
 	dbInit := database2.Database{DB: db}
 	var selectedProducts []model.Product
@@ -21,7 +21,7 @@ func BuyProduct(db *sql.DB, customerId int) {
 
 		if len(products) == 0 {
 			fmt.Println("No Product Available.")
-			return
+			return nil
 		}
 
 		// Prompt user to choose a productID
@@ -61,14 +61,14 @@ func BuyProduct(db *sql.DB, customerId int) {
 
 	if len(selectedProducts) == 0 {
 		fmt.Println("No Product Selected.")
-		return
+		return nil
 	}
 
 	// stok product -1
 	for _, product := range selectedProducts {
 		if err := dbInit.UpdateProductStock(product.ID, -1); err != nil {
 			fmt.Printf("Failed to update stock for Product ID %d: %v\n", product.ID, err)
-			return
+			return nil
 		}
 	}
 
@@ -76,7 +76,7 @@ func BuyProduct(db *sql.DB, customerId int) {
 	err := dbInit.InsertSale(customerId, productQuantities)
 	if err != nil {
 		fmt.Printf("Failed to insert into table sales: %v\n", err)
-		return
+		return nil
 	}
 
 	// Display the products that have been purchased
@@ -86,6 +86,7 @@ func BuyProduct(db *sql.DB, customerId int) {
 			product.ID, product.Name, product.Price, product.Category)
 	}
 	fmt.Println("Thank you for your purchase!")
+	return nil
 }
 
 // ShowProduct show list product

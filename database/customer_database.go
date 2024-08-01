@@ -3,8 +3,10 @@ package database
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fabric-fushion/helper"
 	"fabric-fushion/model"
+	"fmt"
 	"log"
 	"time"
 )
@@ -86,9 +88,24 @@ func (db *Database) GetProductsForOrder(saleID int64) (*sql.Rows, error) {
 
 // UpdateProductStock update stok
 func (db *Database) UpdateProductStock(productID int64, quantity int) error {
+	//get current stok
+	var currentStock int
+	checkStockQuery := `Select stock from products where id = ?`
+	err := db.DB.QueryRow(checkStockQuery, productID).Scan(&currentStock)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return errors.New("product not found")
+		}
+		return err
+	}
+	if currentStock+quantity < 0 {
+		return fmt.Errorf("insufficient stock for Product ID %d. Current stock: %d", productID, currentStock)
+	}
+
+	//query for updated new stock
 	query := `UPDATE products SET stock = stock + ? WHERE id = ?`
 
-	_, err := db.DB.Exec(query, quantity, productID)
+	_, err = db.DB.Exec(query, quantity, productID)
 	if err != nil {
 		return err
 	}
