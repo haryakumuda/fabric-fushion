@@ -40,8 +40,8 @@ func AddCustomer(db *sql.DB, customer model.Customer) (int64, error) {
 	return id, nil
 }
 
-func GetUser(db *sql.DB, user model.UserLogin) (bool, int, int) {
-	var id, roleId int
+func GetUser(db *sql.DB, user model.UserLogin) (bool, int, int, int) {
+	var id, roleId, customerId int
 	var dbEmail, dbPassword string
 
 	// Query to find a user with the given email and password
@@ -50,13 +50,23 @@ func GetUser(db *sql.DB, user model.UserLogin) (bool, int, int) {
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// No matching user found
-			return false, 0, 0
+			return false, 0, 0, 0
 		}
 		log.Fatal("Error executing query: ", err)
 	}
-
+	//query to find customerId
+	customerQuery := `SELECT id FROM customers WHERE user_id = ?`
+	err = db.QueryRow(customerQuery, id).Scan(&customerId)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// No matching customer found for the user
+			customerId = 0
+		} else {
+			log.Fatal("Error executing query for CustomerID: ", err)
+		}
+	}
 	// If we reach here, a matching user was found
-	return true, roleId, id
+	return true, roleId, id, customerId
 }
 
 func AddEmployee(db *sql.DB, employee model.Employee) (int64, error) {

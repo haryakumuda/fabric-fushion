@@ -86,7 +86,7 @@ func AdminMenu(db *sql.DB) {
 	}
 }
 
-func CustomerMenu(db *sql.DB, customerID int) {
+func CustomerMenu(db *sql.DB, customerId int) {
 	for {
 		fmt.Println("\nSelect Menu:")
 		fmt.Println("1. BuyProduct")
@@ -97,7 +97,7 @@ func CustomerMenu(db *sql.DB, customerID int) {
 		fmt.Scanln(&choice)
 		switch choice {
 		case 1:
-			handler.BuyProduct(db, customerID)
+			handler.BuyProduct(db, customerId)
 		case 0:
 			fmt.Println("Exit")
 			return

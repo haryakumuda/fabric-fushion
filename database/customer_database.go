@@ -13,7 +13,6 @@ type Database struct {
 }
 
 func (db *Database) InsertSale(CustomerID int, products map[int]int) error {
-	//convert map to json
 	productsJSON, err := json.Marshal(helper.ConvertToJSON(products))
 	if err != nil {
 		return err
