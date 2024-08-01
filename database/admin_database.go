@@ -151,3 +151,6 @@ func DeleteUser(db *sql.DB, id int64) (int64, error) {
 	log.Println("User deleted successfully")
 	return id, nil
 }
+
+func DeleteAdmin(db *sql.DB) {}
+func UpdateStock(db *sql.DB) {}

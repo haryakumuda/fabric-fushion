@@ -61,13 +61,15 @@ func Login(db *sql.DB) (string, int) {
 func AdminMenu(db *sql.DB) {
 	for {
 		fmt.Println("\nSelect Menu:")
-		fmt.Println("1. Add Product")
-		fmt.Println("2. Add Employee")
-		fmt.Println("3. Order Reports")
-		fmt.Println("4. Stock Reports")
-		fmt.Println("0. Exit")
-		fmt.Println("5. Delete Product")
-		fmt.Println("6. Delete Customer")
+		fmt.Println("1. Order Reports")
+		fmt.Println("2. Stock Reports")
+		fmt.Println("3. User Reports")
+		fmt.Println("4. Add Product")
+		fmt.Println("5. Add Employee")
+		fmt.Println("6. Update Stock")
+		fmt.Println("7. Delete Product")
+		fmt.Println("8. Delete Customer")
+		fmt.Println("9. Delete Admin")
 		fmt.Println("99. Exit")
 		fmt.Printf("\nEnter the number of the menu you want to access: ")
 
@@ -75,17 +77,23 @@ func AdminMenu(db *sql.DB) {
 		fmt.Scanln(&choice)
 		switch choice {
 		case 1:
-			handler.AddProduct(db)
-		case 2:
-			handler.AddEmployee(db)
-		case 3:
 			handler.OrderReports(db)
-		case 4:
+		case 2:
 			handler.StockReports(db)
-		case 0:
-			handler.DeleteProduct(db)
+		case 3:
+			handler.UserReports(db)
+		case 4:
+			handler.AddProduct(db)
+		case 5:
+			handler.AddEmployee(db)
 		case 6:
+			handler.UpdateStock(db)
+		case 7:
+			handler.DeleteProduct(db)
+		case 8:
 			handler.DeleteCustomer(db)
+		case 9:
+			handler.DeleteAdmin(db)
 		case 99:
 			fmt.Println("Exit")
 			return
@@ -99,7 +107,7 @@ func CustomerMenu(db *sql.DB, customerId int) {
 		fmt.Println("1. ShowProduct")
 		fmt.Println("2. BuyProduct")
 		fmt.Println("3. OrderHistory")
-		fmt.Println("0. Exit")
+		fmt.Println("99. Exit")
 		fmt.Printf("\nEnter the number of the menu you want to access: ")
 
 		var choice int
@@ -115,7 +123,7 @@ func CustomerMenu(db *sql.DB, customerId int) {
 			handler.BuyProduct(db, customerId)
 		case 3:
 			handler.OrderHistory(db, customerId)
-		case 0:
+		case 99:
 			fmt.Println("Exit")
 			return
 		default:

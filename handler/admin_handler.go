@@ -223,6 +223,9 @@ func DeleteCustomer(db *sql.DB) {
 	}
 }
 
+func DeleteAdmin(db *sql.DB) {}
+func UpdateStock(db *sql.DB) {}
+
 // Helper function to check if an ID exists in a slice
 func contains(slice []int64, id int64) bool {
 	for _, v := range slice {
