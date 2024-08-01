@@ -14,6 +14,7 @@ func main() {
 	database.GenerateDatabase()
 	conn := database.GetDatabase()
 
-	cli.RunCLI(conn)
 	defer conn.Close()
+	cli.RunCLI(conn)
+
 }
