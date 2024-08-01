@@ -15,4 +15,5 @@ func main() {
 	conn := database.GetDatabase()
 
 	cli.RunCLI(conn)
+	defer conn.Close()
 }

@@ -29,21 +29,21 @@ type Employee struct {
 }
 
 type Sales struct {
-	ID         int
+	ID         int64
 	OrderDate  time.Time
 	CustomerId int64
 }
 
 type Product struct {
-	ID         uint
-	CategoryID uint
+	ID         int64
+	CategoryID int64
 	Name       string
 	Price      float64
-	Stock      int
+	Stock      int64
 	Category   string
 }
 
 type Categories struct {
-	ID       uint
+	ID       int64
 	Category string
 }

@@ -24,7 +24,7 @@ func BuyProduct(db *sql.DB, customerId int) {
 		}
 
 		// Prompt user to choose a productID
-		var productId uint
+		var productId int64
 		fmt.Print("Choose Your Product ID: ")
 		fmt.Scan(&productId)
 
