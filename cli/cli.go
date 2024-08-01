@@ -68,6 +68,8 @@ func AdminMenu(db *sql.DB) {
 		fmt.Println("2. Add Employee")
 		fmt.Println("3. Order Reports")
 		fmt.Println("4. Stock Reports")
+		fmt.Println("5. User Reports")
+		fmt.Println("0. Exit")
 		fmt.Println("5. Delete Product")
 		fmt.Println("6. Delete Customer")
 		fmt.Println("99. Exit")
@@ -85,6 +87,8 @@ func AdminMenu(db *sql.DB) {
 		case 4:
 			handler.StockReports(db)
 		case 5:
+			handler.UserReports(db)
+		case 0:
 			handler.DeleteProduct(db)
 		case 6:
 			handler.DeleteCustomer(db)

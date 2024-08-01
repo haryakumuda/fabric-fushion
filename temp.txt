@@ -37,7 +37,7 @@ NotLogin:
 - Sign Up
 
 Employee:
-- Add Product
+- Add Product ✅
 - Add Employee
 - Order Reports
 - Stock Reports
@@ -68,10 +68,13 @@ Admin:
 - Tambah Fitur Delete Customer
 - Tambah Fitur Delete Employee
 - Tambah Fitur Set Stock
+
+Reports:
 - Order Report diubah menjadi report penjualan per tanggal
+- Format reports agar mudah dibaca
 - Tambah Fitur User Report: menggunakan order report existing yang dimodif
 user report -> show ID pelanggan -> milih id pelanggan -> show report untuk pelanggan yang dipilih
-- Format reports agar mudah dibaca
+
 
 
 all yes/no question inputnya "y" / "n"
