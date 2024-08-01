@@ -79,6 +79,8 @@ func AdminMenu(db *sql.DB) {
 		// 	handler.OrderReports(db)
 		// case 4:
 		// 	handler.StockReports(db)
+		// case 5:
+		// 	handler.UserReports(db)
 		case 0:
 			fmt.Println("Exit")
 			return
