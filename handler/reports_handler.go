@@ -3,6 +3,7 @@ package handler
 import (
 	"database/sql"
 	"fabric-fushion/database"
+	"fabric-fushion/model"
 	"fmt"
 	"strconv"
 	"strings"
@@ -26,8 +27,7 @@ func OrderReports(db *sql.DB) {
 		totalQuantity := report["total_quantity"].(int)
 		totalAmount := report["total_amount"].(float64)
 
-		fmt.Printf("%-10s | %-14d | %.2f\n",
-			orderDate, totalQuantity, totalAmount)
+		fmt.Printf("%-10s | %-14d | %.2f\n", orderDate, totalQuantity, totalAmount)
 	}
 }
 
@@ -49,19 +49,34 @@ func StockReports(db *sql.DB) {
 		categoryName := report["category"].(string)
 		stock := report["stock"].(int)
 
-		fmt.Printf("%-10d | %-30s | %-14s | %-11d\n",
-			productID, productName, categoryName, stock)
+		fmt.Printf("%-10d | %-30s | %-14s | %-11d\n", productID, productName, categoryName, stock)
 	}
 }
 
 func UserReports(db *sql.DB) {
-	fmt.Print("Masukkan ID pelanggan: ")
+	customers, err := database.ShowCustomer(db)
+	if err != nil {
+		fmt.Println("Error showing customer: ", err)
+		return
+	}
+
+	customerMap := make(map[int64]model.ShowCustomer)
+	customersId := []int64{0}
+
+	for _, customer := range customers {
+		fmt.Printf("%d: %s (%s)\n", customer.CustomerId, customer.Name, customer.Email)
+		customerID := int64(customer.CustomerId)
+		customersId = append(customersId, customerID)
+		customerMap[customerID] = customer
+	}
+
+	fmt.Print("Enter customer ID: ")
 	var input string
 	fmt.Scanln(&input)
 
 	customerID, err := strconv.Atoi(input)
 	if err != nil {
-		fmt.Println("ID pelanggan tidak valid.")
+		fmt.Println("Invalid customer ID.")
 		return
 	}
 
@@ -72,11 +87,10 @@ func UserReports(db *sql.DB) {
 	}
 
 	if len(reports) == 0 {
-		fmt.Println("Tidak ada laporan untuk ID pelanggan ini.")
+		fmt.Println("No reports available for this customer ID.")
 		return
 	}
 
-	// header
 	fmt.Println("User Reports:")
 	fmt.Println("Product ID | Product Name                   | Quantity | Total Price | Date       ")
 	fmt.Println(strings.Repeat("-", 70))
@@ -88,8 +102,6 @@ func UserReports(db *sql.DB) {
 		totalPrice := report["total_price"].(float64)
 		orderDate := report["order_date"].(string)
 
-		// report
-		fmt.Printf("%-10d | %-30s | %-8d | %.2f       | %-10s\n",
-			productID, productName, quantity, totalPrice, orderDate)
+		fmt.Printf("%-10d | %-30s | %-8d | %.2f       | %-10s\n", productID, productName, quantity, totalPrice, orderDate)
 	}
 }
