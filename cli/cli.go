@@ -26,12 +26,10 @@ func RunCLI(db *sql.DB) {
 		os.Exit(1)
 
 	}
-
 }
 
 func Login(db *sql.DB) (string, int) {
 	for {
-
 		fmt.Println("\nSelect Menu:")
 		fmt.Println("1. Login")
 		fmt.Println("2. Sign Up")
