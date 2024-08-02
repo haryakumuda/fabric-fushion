@@ -80,12 +80,12 @@ func BuyProduct(db *sql.DB, customerId int) error {
 	}
 
 	// Display the products that have been purchased
-	fmt.Println("\nProducts you have purchased:")
+	fmt.Println("\n=============Products you have purchased:===================")
 	for _, product := range selectedProducts {
-		fmt.Printf("ID: %d\n Name: %s\n Price: %.2f\n Category: %s\n",
+		fmt.Printf("ID: %d | Name: %s | Price: %.2f | Category: %s\n",
 			product.ID, product.Name, product.Price, product.Category)
 	}
-	fmt.Println("Thank you for your purchase!")
+	fmt.Println("=============Thank you for your purchase!==============")
 	return nil
 }
 
@@ -108,7 +108,7 @@ func ShowProduct(db *sql.DB) []model.Product {
 			log.Fatalf("failed to scan product : %v", err)
 		}
 		product.Category = category
-		fmt.Printf("ID : %d\n Name : %s\n Price : %.2f\n Category : %s\n", product.ID, product.Name, product.Price, product.Category)
+		fmt.Printf("ID : %d | Name : %s | Price : %.2f | Category : %s\n", product.ID, product.Name, product.Price, product.Category)
 		products = append(products, product)
 	}
 
